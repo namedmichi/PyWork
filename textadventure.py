@@ -1,17 +1,17 @@
 import random
-from dataclasses import dataclass
 
 
-@dataclass
 class Item:
-    weight: int
-    worth: int
+    def __init__(self, weigth, worth):
+        self.weight = weigth
+        self.worth = worth
 
 
-@dataclass
 class Weapon(Item):
-    wad: int
-    name: str
+    def __init__(self, wad, weight, worth, name):
+        Item.__init__(self, weight, worth)
+        self.wad = wad
+        self.name = name
 
     def rand_weap(self):
         rand = random.randint(0, 2)
@@ -29,30 +29,32 @@ class Weapon(Item):
             self.name = "Stick"
 
 
-@dataclass
 class Potion(Item):
-    pass
+    def __init__(self, weight, worth):
+        Item.__init__(self, weight, worth)
 
 
-@dataclass
 class HealthPotion(Potion):
 
-    regenerated_health: int
-    qty: int
+    def __init__(self, weight, worth,  regenerated_health, qty):
+        Item.__init__(self, weight, worth)
+        self.regenerated_health = regenerated_health
+        self.qty = qty
 
 
-@dataclass
 class FightPotion(Potion):
 
-    extra_ad: int
-    qty: int
+    def __init__(self, weight, worth,  extra_ad, qty):
+        Item.__init__(self, weight, worth)
+        self.extra_ad = extra_ad
+        self.qty = qty
 
 
-@dataclass
 class Character:
-    hp: int
-    ad: int
-    name: int
+    def __init__(self, hp, ad, name):
+        self.hp = hp
+        self.ad = ad
+        self.name = name
 
     def get_hit(self, ad):
         self.hp = self.hp - ad
@@ -76,10 +78,9 @@ class Ork(Character):
         Character.__init__(self, 300, 30, "Ork")
 
 
-@dataclass
 class wInventory:
-
-    winv: list
+    def __init__(self):
+        self.winv = [Weapon(0, 0, 0, "")]
 
     def check_winv(self, p, weapon):
         test = p.winv[0].name
@@ -96,16 +97,15 @@ class wInventory:
         else:
             return False
 
-    def winv_add(
-        self,
-        weapon,
-    ):
+    def winv_add(self, weapon,):
         self.winv[0] = weapon
 
 
-@dataclass
 class Inventory:
-    inv: dict
+    def __init__(self):
+        self.inv = {}
+        self.inv["HealthPotion"] = HealthPotion(1, 20, 100, 1)
+        self.inv["FightPotion"] = FightPotion(1, 50, 100, 2)
 
     def check_winv(self, p):
         pass
@@ -113,17 +113,16 @@ class Inventory:
     def check_emptyinv(self, p):
         pass
 
-    def inv_add(
-        self,
-        object,
-    ):
+    def inv_add(self, object,):
         self.inv[object] = 1
 
 
-@dataclass
 class Player(Character, wInventory, Inventory):
-
-    max_hp: int
+    def __init__(self, name, hp, ad):
+        Character.__init__(self, hp, ad, name)
+        wInventory.__init__(self)
+        Inventory.__init__(self)
+        self.max_hp = hp
 
     def die(self):
         exit("Tot.")
@@ -132,9 +131,9 @@ class Player(Character, wInventory, Inventory):
         self.hp = self.max_hp
 
 
-@dataclass
 class Field:
-    enemies: list
+    def __init__(self, enemies):
+        self.enemies = enemies
 
     def print_state(self):
         print("Du schaust dich um und siehst ")
@@ -152,19 +151,14 @@ class Field:
             return Field([Goblin(), Goblin(), Ork()])
 
 
-@dataclass
 class Map:
-
-    state: list
-    width: int
-    height: int
-
-    def __post_init__(self):
+    def __init__(self, width, height):
+        self.state = []
         self.x = 0
         self.y = 0
-        for i in range(self.width):
+        for i in range(width):
             fields = []
-            for j in range(self.height):
+            for j in range(height):
                 fields.append(Field.gen_random())
             self.state.append(fields)
 
@@ -228,7 +222,7 @@ def show_inv(p, m):
 
 
 def quit_game(p, m):
-    print("Du begehst selbstmord und verlässt die Welt.")
+    print("Du begehst selbstmord und verlasst die Welt.")
     exit(0)
 
 
@@ -272,15 +266,14 @@ def fight(p, m):
                 dro_weapon.rand_weap()
                 print(dro_weapon.name)
                 inpu = str(
-                    input(
-                        "Du hast eine Waffe gefunden willst du sie aufheben?"))
+                    input("Du hast eine Waffe gefunden willst du sie aufheben?"))
                 if inpu == "ja":
                     if p.check_emptywinv(p):
                         p.winv_add(dro_weapon)
                         print(dro_weapon.name, " aufgehoben")
                     elif p.check_winv(p, dro_weapon):
-                        print("Du hast noch ein " + p.winv[0].name +
-                              ",willst du die neue Waffe aufheben ")
+                        print(
+                            "Du hast noch ein " + p.winv[0].name + ",willst du die neue Waffe aufheben ")
                         ipu = str(input(""))
                         if ipu == "ja":
                             p.winv_add(dro_weapon)
@@ -292,15 +285,7 @@ def fight(p, m):
             p.get_hit(i.ad)
             print("Du bist verwundet und hast " + str(p.hp) + " hp left")
     else:
-        if not p.ad == puad:
-            p.ad = puad
-            print("Du wirst schwächer")
-
-
-def game_start(p):
-    p.inv["HealthPotion"] = HealthPotion(1, 20, 100, 1)
-    p.inv["FightPotion"] = FightPotion(1, 50, 100, 2)
-    p.winv = [Weapon(0, 0, 0, "")]
+        p.ad = puad
 
 
 def rest(p, m):
@@ -325,11 +310,10 @@ Commands = {
 
 if __name__ == '__main__':
     name = input("Name eingaben")
-    p = Player({}, [], 500, 100, name, 500)
+    p = Player(name, 500, 100)
     puad = p.ad
-    map = Map([], 5, 5)
+    map = Map(5, 5)
     print("(gib help ein um alle verfügbaren befehle zu sehen)\n")
-    game_start(p)
     while True:
         command = input(">").lower().split(" ")  # pickup
         if command[0] in Commands:
