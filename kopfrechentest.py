@@ -39,7 +39,7 @@ while richtig and (not genug):
         if ergebnis == produkt:
             print("richtig!")
         else:
-            print("falsch!!")
+            print("falsch!!!")
             richtig = False
     else:
         genug = True
