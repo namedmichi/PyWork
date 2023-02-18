@@ -43,3 +43,5 @@ while richtig and (not genug):
             richtig = False
     else:
         genug = True
+
+.capitalize()
