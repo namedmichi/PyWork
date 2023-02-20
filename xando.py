@@ -15,7 +15,7 @@ def XaO(s):
         return False
 
 
-text = "xox"
+text = input("Text eingeben").lower()
 
 if XaO(text):
     print("ja")
