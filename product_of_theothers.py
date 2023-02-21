@@ -1,4 +1,4 @@
-list = [5, 5, 5]
+list = [1, 2, 3, 4, 5]
 
 
 def product_of_others(list):
