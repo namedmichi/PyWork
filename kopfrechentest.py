@@ -44,4 +44,4 @@ while richtig and (not genug):
     else:
         genug = True
 
-.capitalize()
+
