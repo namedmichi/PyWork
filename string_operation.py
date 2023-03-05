@@ -16,7 +16,7 @@ def string_operation(text):
         case "//":
             result = z1 // z2
         case other:
-            print("fehleingabe")
+            print("fehleingabe!")
     return result
 
 
