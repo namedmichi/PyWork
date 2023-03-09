@@ -1,11 +1,49 @@
-import openai 
+import pprint
+import openai
+import time
 
-schnittstelle = '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'
+openai.api_key = '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'
 
-def befehl(details):
-  anfrage = openai.Completion.create(model="text-davinci-003", prompt=details, max_tokens=1024, api_key=schnittstelle)
-  nachricht = anfrage.choices[0].text
-  return nachricht
+response = openai.ChatCompletion.create(
+    model="gpt-3.5-turbo",
+    messages=[{'content': 'This is a conversation between 2 good friends talking about '
+               'their feelings',
+               'role': 'system'},
+              {'content': 'Anna: Hey Max! How  are you', 'role': 'assistant'},
+              {'content': 'Max: Hey Anna. Not really good at the moment',
+               'role': 'assistant'}]
+)
 
-ergebnis = befehl('Erstelle eine Webseite mit Header, Footer und mehreren Kacheln im Flexbox-Layout.')
-print(ergebnis)
+
+def update_chat(messages, role, content):
+    messages.append({"role": role, "content": content})
+    return messages
+
+
+def get_chatgpt_response(messages):
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=messages
+    )
+    return response['choices'][0]['message']['content']
+
+
+messages = [{'content': 'This is a conversation between 2 good friends talking about '
+             'their feelings',
+             'role': 'system'},
+            {'content': 'Anna: Hey Max! How  are you', 'role': 'assistant'},
+            {'content': 'Max: Hey Anna. Not really good at the moment',
+             'role': 'assistant'}]
+c = 0
+while True:
+    try:
+        pprint.pprint(messages)
+        model_response = get_chatgpt_response(messages)
+        messages = update_chat(messages, "assistant", model_response)
+        model_response = get_chatgpt_response(messages)
+        messages = update_chat(messages, "assistant", model_response)
+    except (openai.error.RateLimitError):
+        time.sleep(60)
+    c += 1
+    if c >= 15:
+        break
