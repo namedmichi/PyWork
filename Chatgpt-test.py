@@ -2,15 +2,15 @@ import pprint
 import openai
 import time
 
-openai.api_key = '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'
+openai.api_key = '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'
 
 
-# Fügt den aktuellen Chat an die Liste an
+# Appends the chat to the list
 def update_chat(messages, role, content):
     messages.append({"role": role, "content": content})
     return messages
 
-# Generiert eine Antwort
+# Creates an response
 
 
 def get_chatgpt_response(messages):
@@ -21,14 +21,13 @@ def get_chatgpt_response(messages):
     return response['choices'][0]['message']['content']
 
 
-# Vorgeschriebens Gespräch
-messages = [{'content': 'This is a conversation between 2 good friends talking about '
-             'their feelings',
+# Pre defined chat
+messages = [{'content': 'This is a conversation between 2 KI talking about so problems',
              'role': 'system'},
-            {'content': 'Anna: Hey Max! How  are you', 'role': 'assistant'},
-            {'content': 'Max: Hey Anna. Not really good at the moment',
+            {'content': 'Cleverbot:  What do you think about the humanity', 'role': 'assistant'},
+            {'content': 'Alexa: im not realy sure',
              'role': 'assistant'}]
-# Counter um Loop zu brechen
+# Counter to break loop
 c = 0
 
 # Chat Loop
@@ -41,7 +40,7 @@ while True:
 
         model_response = get_chatgpt_response(messages)
         messages = update_chat(messages, "assistant", model_response)
-    # Lässt das Programm schlafen sollte die Tokens/min überschritten werden
+    # Puts programm to sleep if Tokens/min are exceeded
     except (openai.error.RateLimitError):
         time.sleep(60)
     c += 1
