@@ -11,6 +11,9 @@ char_to_dots = {
     '-': '-....-', '+': '.-.-.', '"': '.-..-.', '?': '..--..', '/': '-..-.'
 }
 text = "HELP ME !"
+morse = ".... . .-.. .--.   -- .   -.-.--"
+
+dots_to_char = {v: k for k, v in char_to_dots.items()}
 
 
 def encode_morse(text):
@@ -19,5 +22,10 @@ def encode_morse(text):
         morse = morse + char_to_dots[item] + " "
     return morse
 
+def decode_morse(morse):
+    text = ""
+    for code in morse.split(" "):
+        text = text + char_to_dots[code] + " "
 
 print(encode_morse(text))
+print(decode_morse(morse))
