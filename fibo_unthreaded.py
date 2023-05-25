@@ -10,4 +10,4 @@ def fibo(n):
     return fiboNum[n]
 
 
-print(fibo(82346))
+print(fibo(34))
