@@ -3,4 +3,7 @@ def rechner(operator):
     zahl2 = input("Gib eine weitere Zahl ein: ")
     string = zahl1 + operator + zahl2
     return eval(string)
-print(rechner(input("Gib einen Operator ein: ")))
+
+
+op = input("Gib einen Operator ein: ")
+print(rechner(op))

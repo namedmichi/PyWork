@@ -1,5 +1,5 @@
 # Um das Programm zu trainieren werden große Datenmengen benötigt.
-
+import matplotlib.pyplot as plt
 import numpy as np
 
 feature = np.array([[4.0, 37.92655435, 23.90101111],   # Hund
@@ -51,16 +51,12 @@ print(feature.shape)
 # Erstellen der Label mit der NumPy "Verketten-Funktion" und den NumPy Funktionen "ones" und "zeros"
 label = np.concatenate((np.ones(21), np.zeros(22)))
 
-# Indizes auslesen
-print(feature[2])   # Ganze Zeile Nr. 3
 
-print(feature[:, 0])
+# Versuch Nr. 2.
+plt.title('Trainingsdaten')     # Benennung des Plotts
+plt.xlabel('Höhe in cm')  # Benennung der X-Achse
+plt.ylabel('Größe in cm')       # Benennung der X-Achse
 
-print(np.mean(feature[:, 0]))
+plt.scatter(feature[:, 2], feature[:, 1], c=label)
 
-print(feature[len(feature)-2])
-
-
-print(feature[14:24])
-
-print(feature[0:len(feature)-1:3])
+plt.show()
